@@ -5,113 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerador de Imagens e Vídeos - iaDesigner</title>
   <style>
+    @font-face {
+      font-family: 'Exstrende Future';
+      src: url('ExstrendeFuture.ttf'); /* Certifique-se de ter essa fonte no diretório ou substitua pelo caminho correto */
+    }
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Exstrende Future', Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #000; /* Fundo preto */
-      color: #fff; /* Texto branco para contraste */
+      background-color: #0d0d0d; /* Fundo futurista */
+      color: #fff;
     }
     header {
       text-align: center;
       padding: 20px;
-      background-color: #111;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #111, #333);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
     }
     header h1 {
       margin: 0;
-      font-size: 24px;
+      font-size: 26px;
+      color: #00ff00; /* Verde estilo WhatsApp */
     }
     main {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 20px;
+      margin: 30px;
     }
     .prompt-container {
-      background: #222;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #1a1a1a, #333);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
     }
     .prompt-container h2 {
-      margin-bottom: 15px;
-      font-size: 20px;
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #00ff00;
     }
     .prompt-container label {
       display: block;
       margin-bottom: 10px;
       font-weight: bold;
+      color: #ddd;
     }
     .prompt-container input,
     .prompt-container select {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #444;
-      border-radius: 4px;
+      border-radius: 6px;
       background: #111;
       color: #fff;
     }
     .prompt-container button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: none;
-      background-color: #444;
+      background: linear-gradient(45deg, #444, #666);
       color: #fff;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 16px;
+      transition: background 0.3s ease-in-out;
     }
     .prompt-container button:hover {
-      background-color: #666;
+      background: linear-gradient(45deg, #666, #888);
     }
     footer {
-      margin-top: 20px;
+      margin-top: 30px;
       text-align: center;
       font-size: 14px;
-      color: #777;
+      color: #888;
       padding: 10px;
-      background: #111;
-      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #111, #333);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.8);
     }
-    .watermark {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      font-size: 12px;
-      opacity: 0.5;
-    }
-    .pro-button {
-      position: fixed;
-      bottom: 70px;
-      right: 10px;
-      background: #444;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-size: 14px;
-      text-decoration: none;
-      text-align: center;
-    }
-    .pro-button:hover {
-      background: #666;
+    footer span {
+      color: #ff00ff; /* Púrpura */
     }
     #loading {
       display: none;
       margin-top: 15px;
       color: #fff;
-      font-size: 14px;
+      font-size: 16px;
       text-align: center;
     }
     #result {
-      margin-top: 20px;
+      margin-top: 25px;
       text-align: center;
     }
     #result a {
-      color: #00aaff;
+      color: #00ff00;
       text-decoration: none;
       font-weight: bold;
     }
@@ -138,29 +127,27 @@
         <option value="16:9">16:9</option>
       </select>
 
-      <button onclick="generateImage()" aria-label="Gerar Imagem">Gerar Imagem</button>
-      <button onclick="generateVideo()" aria-label="Gerar Vídeo">Gerar Vídeo</button>
+      <button onclick="generateImage()">Gerar Imagem</button>
+      <button onclick="generateVideo()">Gerar Vídeo</button>
 
       <div id="loading">Processando... Por favor, aguarde.</div>
     </div>
     <div id="result"></div>
   </main>
   <footer>
-    Copyright 2024 'iaDesigner'
+    @Copyright 2034 • Feito com amor. <span>💜🍀</span>
   </footer>
-  <div class="watermark">iaDesigner</div>
-  <a href="https://wa.me/558799786261" class="pro-button">PRO</a>
 
   <script>
-    const API_URL = "https://api.exemplo.com"; // Substitua com o endpoint base da API
-    const API_TOKEN = "077kb742-9494-4af4-b4ea-7438a1d40321";
+    const API_URL = "https://pixabay.com/api/?key=SEU_TOKEN_AQUI"; // Substitua com o endpoint correto da API
+    const API_TOKEN = "077kb742-9494-4af4-b4ea-7438a1d40321"; // Token fornecido
 
     async function generateContent(type) {
       const prompt = document.getElementById('prompt').value.trim();
       const ratio = document.getElementById('ratio').value;
       const loading = document.getElementById('loading');
       const result = document.getElementById('result');
-      const duration = type === 'video' ? 3 : null; // Limite de 3 segundos para vídeos
+      const duration = type === 'video' ? 4 : null;
 
       if (!prompt) {
         alert('O prompt não pode estar vazio!');
